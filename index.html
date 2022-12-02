@@ -1,24 +1,86 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <style>
-            .fade {
-                animation-name: fade;
-                animation-duration: 1.5s;
+ 
+<head>
+    <style>
+         
+        img {
+            position: absolute;
+            width: 90%;
+            height: 95%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        div {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+ 
+</head>
+ 
+<body>
+
+    <div id="slides">
+        <!-- <img src= "/static/images/1.jpeg"
+             class="slideShow" />
+        <img src= "/static/images/2.jpeg"
+             class="slideShow" /> -->
+    </div>
+ 
+    <script>
+        startImageTransition();
+ 
+        function startImageTransition() {
+            var images = document.getElementsByClassName("slideShow");
+ 
+            for (var i = 0; i < images.length; ++i) {
+                images[i].style.opacity = 1;
             }
-
-            @keyframes fade {
-                from {opacity: .4} 
-                to {opacity: 1}
+ 
+            var top = 1;
+ 
+            var cur = images.length - 1;
+ 
+            setInterval(changeImage, 5000);
+ 
+            async function changeImage() {
+ 
+                var nextImage = (1 + cur) % images.length;
+ 
+                images[cur].style.zIndex = top + 1;
+                images[nextImage].style.zIndex = top;
+ 
+                await transition();
+ 
+                images[cur].style.zIndex = top;
+                images[nextImage].style.zIndex = top + 1;
+                top = top + 1;
+                images[cur].style.opacity = 1;
+                cur = nextImage;
             }
-        </style>
-    </head>
-
-    <body>
-        <!-- <h1>slideshow</h1> -->
-
-        <div class="fade" align="middle">
-            <img src='/slideshow' style='width: 90%; height: 90%;'/>
-        </div>
-    </body>
-
+ 
+            function transition() {
+                return new Promise(function(resolve, reject) {
+                    var del = 0.01;
+ 
+                    var id = setInterval(changeOpacity, 10);
+ 
+                    function changeOpacity() {
+                        images[cur].style.opacity -= del;
+                        if (images[cur].style.opacity <= 0) {
+                            clearInterval(id);
+                            resolve();
+                        }
+                    }
+ 
+                })
+            }
+        }
+    </script>
+ 
+</body>
+ 
 </html>
